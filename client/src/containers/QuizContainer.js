@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Quiz from '../components/Quiz';
-import {quiz} from '../data/Quizzes'
+import Question from '../quiz_components/Question';
+
 class QuizContainer extends Component{
     constructor(){
         super()
@@ -27,6 +27,7 @@ class QuizContainer extends Component{
         return(
             <form id="quiz-form" onSubmit={this.handleSubmit}>
             Hello
+            <Question/>
             <input type="submit" value="Submit Quiz" />
             </form>
         )
