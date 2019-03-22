@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import Question from '../quiz_components/CreateQuiz';
 import { Link } from 'react-router-dom';
 
 class QuizRouter extends Component{
     constructor(){
         super()
         this.state = {
-            selected: [],
-            correct: []
         }
     }
+
+
 
     copyCurrentState = (current) => {
         console.log(current)
@@ -27,8 +26,11 @@ class QuizRouter extends Component{
     render(){
         return(
             <div>
-                <Link to="/about"><button>Create Quiz</button></Link>
-                <Question/>
+                <Link 
+                    to={{pathname:"/quizzes/createQuiz"}}
+                >
+                    <button>Create Quiz</button>
+                </Link>
             </div>
         )
     }

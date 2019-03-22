@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import Answers from './Answers';
 import TimeField from 'react-simple-timefield';
-import { Link } from 'react-router-dom';
+import DatePicker from "react-datepicker";
 
-class Question extends Component {
+import "react-datepicker/dist/react-datepicker.css";
+
+class CreateQuiz extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -12,8 +14,10 @@ class Question extends Component {
             answers: [[]],
             correctAnswers: [-1 ],
             quizTitle: '',
-            timeLimit: '00:00'
+            timeLimit: '00:00',
+            date: new Date()
         };
+
 
         this.handleQuestionChange = this.handleQuestionChange.bind(this);
         this.handleAddQuestionClick = this.handleAddQuestionClick.bind(this);
@@ -21,6 +25,13 @@ class Question extends Component {
         this.updateQuestionAnswerData = this.updateQuestionAnswerData.bind(this);
         this.changeQuizTitle = this.changeQuizTitle.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
+    }
+
+    handleDateChange(date) {
+        this.setState({
+          date: date
+        });
     }
 
     handleQuestionChange(event, questionNum){
@@ -156,16 +167,24 @@ class Question extends Component {
                         style={{marginLeft:'10px'}}
                     />
                     <br/><br/>
+
+                    <label style={{marginRight:'10px'}}>
+                        Select Exam Date
+                    </label>
+                    <DatePicker
+                        selected={this.state.date}
+                        onChange={this.handleDateChange}
+                    />
+                    <br/><br/>
                     <button>Publish Quiz</button>
                 </label>
 
                 </form>
 
-                <Link to="/gworug"><button>Go</button></Link>
            </div>
         )
     } 
   
 }
 
-export default Question;
+export default CreateQuiz;
