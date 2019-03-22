@@ -4,37 +4,35 @@ class Answers extends Component {
     constructor(props){
         super(props);
         this.state = {
-            answers: [],
-            numAnswers: 0
+            answers: props.answers,
+            numAnswers: props.answers.length,
+            correctAnswer: props.correctAnswer
         };
 
         this.handleAddAnswerClick = this.handleAddAnswerClick.bind(this);
         this.handleRemoveAnswerClick = this.handleRemoveAnswerClick.bind(this);
+        this.selectCorrectAnswer = this.selectCorrectAnswer.bind(this);
     }
 
-    handleClick = (questionNum , answerPicked, isCorrect) => {
-        let newSelect = this.state.selected.slice();
-        let newCorrect = this.state.correct.slice();
-        newSelect[questionNum] = answerPicked;
-        newCorrect[questionNum] = isCorrect;
-        this.setState({
-            selected: newSelect,
-            correct: newCorrect
-        })
-        this.props.getCurrentState({
-            selected: newSelect,
-            correct: newCorrect
-        });
+    componentWillReceiveProps(newProps) {
+        this.setState({ 
+            answers: newProps.answers, 
+            numAnswers: newProps.answers.length,
+            correctAnswer: newProps.correctAnswer
+        });  
     }
-
 
     handleAddAnswerClick(event){
+        event.preventDefault();
         const num = this.state.numAnswers + 1;
-        var tempAnswers = this.state.answers.concat('no Answer')
+        var tempAnswers = this.state.answers.concat('');
         this.setState({
             answers: tempAnswers,
             numAnswers: num
         });
+
+        this.props.updateQuestionAnswerData(tempAnswers, this.props.questionNumber, this.state.correctAnswer);
+
 
     }
 
@@ -51,42 +49,71 @@ class Answers extends Component {
             answers: newAnswers
         });
 
+
+
+        this.props.updateQuestionAnswerData(newAnswers, this.props.questionNumber, this.state.correctAnswer);
+
     }
 
-    handleRemoveAnswerClick(index){
-        console.log(this.state.answers);
-        console.log(index);
-        const newAnswers = this.state.answers.filter((key, j) => j !== index);
+    handleRemoveAnswerClick(event, index){
+        event.preventDefault();
+        const newAnswers = this.state.answers.filter((_, j) => j !== index);
         const newNumAnswers = this.state.numAnswers - 1;
+        var newCorrectAnswer = -1;
+        if(index < this.state.correctAnswer){
+            newCorrectAnswer = this.state.correctAnswer - 1;
+        } else if(index > this.state.correctAnswer){
+            newCorrectAnswer = this.state.correctAnswer;
+        }
+
         this.setState({
             answers: newAnswers,
-            numAnswers: newNumAnswers
+            numAnswers: newNumAnswers,
+            correctAnswer: newCorrectAnswer
+        });
+        
+        this.props.updateQuestionAnswerData(newAnswers, this.props.questionNumber, newCorrectAnswer);
+    }
+
+    
+    selectCorrectAnswer(index){
+        console.log('answer ' + index + ' selected');
+        this.setState({
+            correctAnswer: index
         });
 
-        console.log(newAnswers)
-        console.log(this.state.numAnswers);
+        this.props.updateQuestionAnswerData(this.state.answers, this.props.questionNumber, index);
     }
+
 
     render(){
         const answers = this.state.answers;
 
         return(
             <div>
-                <form>
-                    <label>
-                    {answers.map((key, index) => (
-                        <div key={index}>
-                            Answer {index + 1}:
-                            <input 
-                                type="text" 
-                                name={index} 
-                                onChange={(event) => {this.handleAnswerChange(event, index)}}
-                            />
-                            <button onClick={() => {this.handleRemoveAnswerClick(index)}}>Remove Answer</button>
-                        </div>
-                    ))}
-                    </label>
-                </form>
+                <label>
+                {answers.map((key, index) => (
+                    <div key={index}>
+                        <label>
+                            Mark Answer {index + 1} as correct:
+                        </label>
+                        <input
+                            type="radio"
+                            checked={this.state.correctAnswer === index}
+                            onChange={() => {this.selectCorrectAnswer(index)}}
+                            style={{marginRight:'10px'}}
+                        />
+                        <input 
+                            type="text" 
+                            name={index} 
+                            onChange={(event) => {this.handleAnswerChange(event, index)}}
+                            value={key}
+                            style={{ width:"300px", marginRight:"10px" }}
+                        />
+                        <button onClick={(event) => {this.handleRemoveAnswerClick(event, index)}}>Remove Answer</button>
+                    </div>
+                ))}
+                </label>
                 <button onClick={this.handleAddAnswerClick}>Add Answer</button>
            </div>
         )

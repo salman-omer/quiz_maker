@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Question from '../quiz_components/Question';
+import Question from '../quiz_components/CreateQuiz';
+import { Link } from 'react-router-dom';
 
-class QuizContainer extends Component{
+class QuizRouter extends Component{
     constructor(){
         super()
         this.state = {
@@ -25,15 +26,14 @@ class QuizContainer extends Component{
 
     render(){
         return(
-            <form id="quiz-form" onSubmit={this.handleSubmit}>
-            Hello
-            <Question/>
-            <input type="submit" value="Submit Quiz" />
-            </form>
+            <div>
+                <Link to="/about"><button>Create Quiz</button></Link>
+                <Question/>
+            </div>
         )
     }
     
 }
    
 
-export default QuizContainer;
+export default QuizRouter;

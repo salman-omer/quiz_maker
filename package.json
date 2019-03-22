@@ -22,6 +22,8 @@
     "react-dom": "^16.8.4",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.8",
-    "react-spring": "^8.0.17"
+    "react-simple-timefield": "^2.0.1",
+    "react-spring": "^8.0.17",
+    "react-time-picker": "^3.3.0"
   }
 }
