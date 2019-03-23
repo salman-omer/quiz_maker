@@ -19,7 +19,7 @@ app.use(function (req, res, next) {
 });
 
 // this is our MongoDB database
-const dbRoute = "mongodb+srv://minerva:minerva@minerva-c20xu.mongodb.net/minerva?retryWrites=true";
+const dbRoute = "mongodb+srv://minerva:minerva@minerva-c20xu.mongodb.net/minerva";
 //mongo "mongodb+srv://minerva-c20xu.mongodb.net/test" --username minerva
 
 // connects our back end code with the database

@@ -1,6 +1,12 @@
 import React, {Component} from 'react';
-
+import { connect } from 'react-redux' 
+import { getAnnouncements, addAnnouncement} from '../actions/itemActions';
+import PropTypes from 'prop-types'
+import uuid from 'uuid'
 class CreateAnnouncement extends Component {
+    componentDidMount(){
+        this.props.getAnnouncements();
+    }
     constructor(props){
         super(props)
         this.state = {
@@ -17,6 +23,10 @@ class CreateAnnouncement extends Component {
     handleSubmit(event) {
         alert('Submitted:' + this.state.value);
         event.preventDefault();
+        const newAnnouncement ={
+            message: this.state.value
+        }
+        this.props.addAnnouncement(newAnnouncement);
     }
 
     handleSave(event) {
@@ -39,4 +49,14 @@ class CreateAnnouncement extends Component {
     } 
 }
 
-export default CreateAnnouncement;
+CreateAnnouncement.propTypes= {
+    getItems: PropTypes.func.isRequired,
+    item: PropTypes.object.isRequired,
+}
+
+const mapStateToProps = (state) => ({
+    announcement: state.announcement
+})
+
+
+export default connect(mapStateToProps, {getAnnouncements, addAnnouncement})(CreateAnnouncement);
