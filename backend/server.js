@@ -50,41 +50,16 @@ router.get("/getData", (req, res) => {
 
 // this is our update method
 // this method overwrites existing data in our database
-router.post("/updateData", (req, res) => {
-  const { id, update } = req.body;
-  Data.findOneAndUpdate(id, update, err => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true });
-  });
-});
-
-// this is our delete method
-// this method removes existing data in our database
-router.delete("/deleteData", (req, res) => {
-  const { id } = req.body;
-  console.log(id);
-  Data.findOneAndDelete(id, err => {
-    if (err) return res.send(err);
-    return res.json({ success: true });
-  });
-});
-
-// this is our create methid
-// this method adds new data in our database
-router.post("/putData", (req, res) => {
-  let data = new Data();
-
-  const { id, message } = req.body;
-
-  if ((!id && id !== 0) || !message) {
-    return res.json({
-      success: false,
-      error: "INVALID INPUTS"
-    });
-  }
-  data.message = message;
-  data.id = id;
-  data.save(err => {
+router.post("/updateQuiz", (req, res) => {
+  
+  const { quizTitle, problems, timeLimit, date, id} = req.body;
+  
+  
+  QuizTemplate.findOneAndUpdate({"_id": id}, {$set: {"quizTitle": quizTitle, 
+                                            "problems": problems, 
+                                            "timelimit": timeLimit, 
+                                            "date": date}},
+                                            err => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
@@ -95,11 +70,12 @@ router.post("/putData", (req, res) => {
 router.post("/submitQuiz", (req, res) => {
   let quiz = new QuizTemplate();
   
-  const { quizTitle, problems, timeLimit } = req.body;
+  const { quizTitle, problems, timeLimit, date } = req.body;
   
   quiz.quizTitle = quizTitle;  
   quiz.problems = problems;
   quiz.timelimit = timeLimit;
+  quiz.date = date;
   quiz.save(err => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
@@ -110,7 +86,6 @@ router.post("/submitQuiz", (req, res) => {
 // get all quiz data
 router.get("/getQuizzes", (req, res) => {
   QuizTemplate.find((err, data) => {
-    console.log(data);
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
   });

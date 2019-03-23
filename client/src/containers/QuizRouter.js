@@ -6,42 +6,63 @@ class QuizRouter extends Component{
     constructor(){
         super()
         this.state = {
+            quizData: []
         }
+        this.getQuizData();
     }
 
     componentDidMount(){
-        console.log("AAAAAAAAAAAAAAAH");
+        this.getQuizData();
     }
 
 
-
-    copyCurrentState = (current) => {
-        console.log(current)
-        this.setState({
-            selected: current.selected,
-            correct: current.correct
-        })
-    }
-
-    handleSubmit = (event) => {
-        event.preventDefault();
-        console.log('Number of Correct Answers: ' + this.state.correct.filter(value => value).length)
-    }
-
-    getQuizData = (event) => {
-        console.log("in get quiz data");
+    getQuizData = () => {
         axios.get('http://localhost:3001/api/getQuizzes')
-        .then(res => console.log(res.data));
+        .then(res => {
+            console.log(res.data.data);
+            this.setState({
+              quizData: res.data.data
+            });
+        })
+        
+    }
+
+    handleQuizTitleClick = (event) => {
+        event.preventDefault();
+        console.log('clicked');
     }
 
     render(){
         return(
             <div>
-                <button onClick={this.getQuizData}>Fetch Data</button>
+                <div style={{border: '3px red solid'}}>
+                <label>
+                    Edit Saved Quizzes
+                    <br/><br/>
+                    {this.state.quizData.map((key, index) => {
+                        if(key.quizTitle != null && key.quizTitle !== ""){
+                            return(
+                                <div key={index}>
+                                    <Link to={{pathname: '/createQuiz', state: {quizData: key, newQuiz: false}}}>
+                                        <button>
+                                            {key.quizTitle}
+                                        </button>
+                                    </Link>
+                                </div>
+                            )   
+                        }
+                        return
+                    }
+                    )}
+                </label>
                 <br/>
-                <Link to="/createQuiz">
-                    <button>Create New Quiz</button>
-                </Link>
+                </div>
+                <div>
+                    <Link to={{pathname: '/createQuiz', state: {quizData: null, newQuiz: true}}}>
+                        <button>Create New Quiz</button>
+                    </Link>
+                </div>
+
             </div>
         )
     }

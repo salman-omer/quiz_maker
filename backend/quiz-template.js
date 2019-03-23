@@ -6,7 +6,8 @@ const QuizTemplateSchema = new Schema(
   {
     quizTitle: String, 
     problems: Array,
-    timelimit: Number
+    timelimit: Number,
+    date: String,
   },
   { timestamps: true }
 );

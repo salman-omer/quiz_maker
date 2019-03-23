@@ -9,17 +9,43 @@ import history from '../History';
 import "react-datepicker/dist/react-datepicker.css";
 
 class CreateQuiz extends Component {
+
+    
     constructor(props){
         super(props);
-        this.state = {
-            questions: [''],
-            numQuestions: 1,
-            answers: [[]],
-            correctAnswers: [-1],
-            quizTitle: '',
-            timeLimit: '00:00:00',
-            date: new Date()
-        };
+
+        const {quizData, newQuiz} = props.location.state;
+        console.log(quizData);
+
+        if(quizData != null){
+            var timeLimit = quizData.timelimit / 1000;
+            const hours = Math.floor(timeLimit / 3600);
+            const minutes = Math.floor((timeLimit / 60) - (hours * 60));
+            const seconds = timeLimit - (hours * 3600) - (minutes * 60);
+            this.state = {
+                id: quizData._id,
+                questions: quizData.problems.map((key) => (key[0])),
+                numQuestions: quizData.problems.length,
+                answers: quizData.problems.map((key) => (key[1])),
+                correctAnswers: quizData.problems.map((key) => (key[2])),
+                quizTitle: quizData.quizTitle,
+                timeLimit: this.padTimeZeros(hours) + ':' + this.padTimeZeros(minutes) + ':' + this.padTimeZeros(seconds),
+                date: new Date(quizData.date),
+                newQuiz: newQuiz
+            }
+        } else {
+            this.state = {
+                questions: [''],
+                numQuestions: 1,
+                answers: [[]],
+                correctAnswers: [-1],
+                quizTitle: '',
+                timeLimit: '00:00:00',
+                date: new Date(),
+                newQuiz: newQuiz
+            };
+        }
+        
 
 
         this.handleQuestionChange = this.handleQuestionChange.bind(this);
@@ -29,13 +55,23 @@ class CreateQuiz extends Component {
         this.changeQuizTitle = this.changeQuizTitle.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
-        this.submitQuizToDb = this.submitQuizToDb.bind(this)
+        this.submitQuizToDb = this.submitQuizToDb.bind(this);
+        this.padTimeZeros = this.padTimeZeros.bind(this);
+    }
+
+    padTimeZeros(value){
+        if(value / 10 <= 1){
+            return '0' + value;
+        } else{
+            return value;
+        }
     }
 
     handleDateChange(date) {
         this.setState({
           date: date
         });
+        console.log(date.toString());
     }
 
     handleQuestionChange(event, questionNum){
@@ -136,13 +172,24 @@ class CreateQuiz extends Component {
 
         // minutes are worth 60 seconds. Hours are worth 60 minutes.
         var miliSeconds = 1000 * ((+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]));
-    
-        axios.post("http://localhost:3001/api/submitQuiz", {
-          quizTitle: this.state.quizTitle,
-          problems: quizProblems,
-          timeLimit: miliSeconds
-        })
-        .then(res => console.log(res.data));
+        if(this.state.newQuiz === false){
+            axios.post("http://localhost:3001/api/updateQuiz", {
+                quizTitle: this.state.quizTitle,
+                problems: quizProblems,
+                timeLimit: miliSeconds,
+                date: this.state.date.toString(),
+                id: this.state.id
+            })
+            .then(res => console.log(res.data));
+        } else {
+            axios.post("http://localhost:3001/api/submitQuiz", {
+                quizTitle: this.state.quizTitle,
+                problems: quizProblems,
+                timeLimit: miliSeconds,
+                date: this.state.date.toString()
+            })
+            .then(res => console.log(res.data));
+        }
 
         history.push('/quizzes');
     };
