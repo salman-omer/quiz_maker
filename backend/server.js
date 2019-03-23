@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const Data = require("./data");
+const QuizTemplate = require("./quiz-template")
 
 const API_PORT = 3001;
 const app = express();
@@ -88,6 +89,33 @@ router.post("/putData", (req, res) => {
     return res.json({ success: true });
   });
 });
+
+
+//req.body is the object
+router.post("/submitQuiz", (req, res) => {
+  let quiz = new QuizTemplate();
+  
+  const { quizTitle, problems, timeLimit } = req.body;
+  
+  quiz.quizTitle = quizTitle;  
+  quiz.problems = problems;
+  quiz.timelimit = timeLimit;
+  quiz.save(err => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+});
+
+
+// get all quiz data
+router.get("/getQuizzes", (req, res) => {
+  QuizTemplate.find((err, data) => {
+    console.log(data);
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  });
+});
+
 
 // append /api for our http requests
 app.use("/api", router);

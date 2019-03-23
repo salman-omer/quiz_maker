@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import Answers from './Answers';
 import TimeField from 'react-simple-timefield';
 import DatePicker from "react-datepicker";
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import history from '../History';
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -12,9 +15,9 @@ class CreateQuiz extends Component {
             questions: [''],
             numQuestions: 1,
             answers: [[]],
-            correctAnswers: [-1 ],
+            correctAnswers: [-1],
             quizTitle: '',
-            timeLimit: '00:00',
+            timeLimit: '00:00:00',
             date: new Date()
         };
 
@@ -26,6 +29,7 @@ class CreateQuiz extends Component {
         this.changeQuizTitle = this.changeQuizTitle.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
+        this.submitQuizToDb = this.submitQuizToDb.bind(this)
     }
 
     handleDateChange(date) {
@@ -115,6 +119,35 @@ class CreateQuiz extends Component {
     handleTimeChange(time){
         this.setState({timeLimit: time});
     }
+
+
+    submitQuizToDb = (event) => {
+        
+        let quizProblems = this.state.questions.map((key, index) => {
+            var currProblem = [];
+            currProblem[0] = key;
+            currProblem[1] = this.state.answers[index];
+            currProblem[2] = this.state.correctAnswers[index];
+            return currProblem;
+        });
+        
+        var hms = this.state.timeLimit;   // your input string    
+        var a = hms.split(':'); // split it at the colons
+
+        // minutes are worth 60 seconds. Hours are worth 60 minutes.
+        var miliSeconds = 1000 * ((+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]));
+    
+        axios.post("http://localhost:3001/api/submitQuiz", {
+          quizTitle: this.state.quizTitle,
+          problems: quizProblems,
+          timeLimit: miliSeconds
+        })
+        .then(res => console.log(res.data));
+
+        history.push('/quizzes');
+    };
+
+
     render(){
         const questions = this.state.questions;
         return(
@@ -176,10 +209,14 @@ class CreateQuiz extends Component {
                         onChange={this.handleDateChange}
                     />
                     <br/><br/>
-                    <button>Publish Quiz</button>
+
                 </label>
 
                 </form>
+
+                <Link to="/quizzes">
+                        <button onClick={this.submitQuizToDb}>Publish Quiz</button>
+                </Link>
 
            </div>
         )
