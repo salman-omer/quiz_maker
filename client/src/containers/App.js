@@ -17,7 +17,7 @@ const App = (props) => {
         <Provider store = {store}>
             <Router>
                 <React.Fragment>
-                <NavBar/>
+                
                 <Route exact path='/' component={Home} />
                 <Route exact path='/forum' render={Forum} />
                 <Route exact path='/quizzes' component={QuizContainer} />

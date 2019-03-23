@@ -5,23 +5,25 @@ export const getAnnouncements  =  () => dispatch => {
     dispatch(setAnnouncementsLoading());
     axios  
         .get('/api/announcements')
-        .then(res=>
-            dispatch({
-                type: GET_ANNOUNCEMENTS,
-                payload: res.data 
-            })
-        )
+        .then(res=> dispatch({
+            type: GET_ANNOUNCEMENTS,
+            payload: res.data 
+        })) 
 };
 
-export const deleteAnnouncement = id  => {
-    return{
-        type: DELETE_ANNOUNCEMENT,
-        payload: id,
-    };
+export const deleteAnnouncement = id  => dispatch => {
+    axios  
+        .delete(`/api/announcements/${id}`)
+        .then(res=>
+            dispatch({
+                type: DELETE_ANNOUNCEMENT,
+                payload: id
+            })
+        )
+    
 };
 
 export const addAnnouncement = announcement  => dispatch => {
-    window.alert("annoucement add");
     axios  
         .post('/api/announcements', announcement)
         .then(res=>

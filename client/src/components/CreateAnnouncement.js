@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux' 
 import { getAnnouncements, addAnnouncement} from '../actions/itemActions';
 import PropTypes from 'prop-types'
-import uuid from 'uuid'
 class CreateAnnouncement extends Component {
     componentDidMount(){
         this.props.getAnnouncements();
@@ -21,7 +20,6 @@ class CreateAnnouncement extends Component {
     }
 
     handleSubmit(event) {
-        alert('Submitted:' + this.state.value);
         event.preventDefault();
         const newAnnouncement ={
             message: this.state.value

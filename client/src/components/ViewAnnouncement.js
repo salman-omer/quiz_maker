@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Container, ListGroup, ListGroupItem, Button} from 'reactstrap';
 import {CSSTransition, TransitionGroup } from 'react-transition-group';
- import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux' 
 import { getAnnouncements, deleteAnnouncement } from '../actions/itemActions';
 import PropTypes from 'prop-types'
@@ -12,6 +12,7 @@ class ViewAnnouncement extends Component{
     }
 
     onDeleteClick = id => {
+       
         this.props.deleteAnnouncement(id);
     };
 
@@ -27,15 +28,15 @@ class ViewAnnouncement extends Component{
 
                 <ListGroup>
                     <TransitionGroup className= "announcementlist">
-                    {announcements.map(({id,message}) =>( 
-                        <CSSTransition key={id} timeout={50} classNames = "fade">
+                    {announcements.map(({_id,message}) =>( 
+                        <CSSTransition key={_id} timeout={500} classNames = "fade">
                             <ListGroupItem color = 'dark'>
                                 <Button 
                                     className="remove-announcement"
                                     color = "danger"
                                     size = "sm"
                                     style={{marginRight: '2em '}}
-                                    onClick = { this.onDeleteClick.bind(this,id)}
+                                    onClick = { this.onDeleteClick.bind(this,_id)}
                                 >
                                     &times;
                                 </Button>

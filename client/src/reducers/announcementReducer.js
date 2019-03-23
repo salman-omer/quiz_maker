@@ -1,5 +1,4 @@
 import { GET_ANNOUNCEMENTS, ADD_ANNOUNCEMENT, DELETE_ANNOUNCEMENT, ANNOUNCEMENTS_LOADING} from '../actions/types';
-import uuid from 'uuid'
 import { allResolved } from 'q';
 const initalState= {
     announcements:[],
@@ -12,13 +11,13 @@ export default function (state= initalState, action) {
         case GET_ANNOUNCEMENTS:
             return {
                 ...state,
-                items: action.payload,
+                announcements: action.payload,
                 loading: false
             }
         case DELETE_ANNOUNCEMENT:
             return {
                 ...state,
-                announcements: state.announcements.filter( announcement => announcement.id !== action.payload)
+                announcements: state.announcements.filter( announcement => announcement._id !== action.payload)
             };
         case ADD_ANNOUNCEMENT:
             return {
