@@ -5,46 +5,28 @@ import store from '../store'
 
 import Home from '../containers/Home';
 import Forum from '../containers/Forum';
-<<<<<<< HEAD
 import QuizRouter from './QuizRouter';
 import NavBar from '../containers/NavBar';
 import CreateQuiz from '../quiz_components/CreateQuiz';
+import CreateAnnouncement from '../components/CreateAnnouncement';
+import ViewAnnouncement from '../components/ViewAnnouncement';
 import history from '../History';
 
 const App = (props) => {
     return(
-        <Router history={history}>
-            <React.Fragment>
-             <NavBar/>
-             <Route exact path='/' component={Home} />
-             <Route exact path='/forum' render={Forum} />
-             <Route exact path='/quizzes' component={QuizRouter} />
-             <Route exact path='/createQuiz' component={CreateQuiz} />
-            </React.Fragment>    
-        </Router>
-=======
-import CreateAnnouncement from '../components/CreateAnnouncement';
-import ViewAnnouncement from '../components/ViewAnnouncement';
-import QuizContainer from '../containers/QuizContainer';
-import NavBar from '../containers/NavBar';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-
-const App = (props) => {
-    return(
         <Provider store = {store}>
-            <Router>
+            <Router history={history}>
                 <React.Fragment>
-                
+                <NavBar/>
                 <Route exact path='/' component={Home} />
                 <Route exact path='/forum' render={Forum} />
-                <Route exact path='/quizzes' component={QuizContainer} />
+                <Route exact path='/quizzes' component={QuizRouter} />
+                <Route exact path='/createQuiz' component={CreateQuiz} />
                 <Route exact path='/announcements/new' component={CreateAnnouncement} />
                 <Route exact path='/announcements/view' component={ViewAnnouncement} />
                 </React.Fragment>    
             </Router>
         </Provider>
->>>>>>> origin/Josh
     );
 };
 

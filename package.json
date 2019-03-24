@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "client-install":  "npm install --prefix client",
+    "client-install": "npm install --prefix client",
     "start": "concurrently \"cd backend && node server.js\" \"cd client && npm start\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,21 +16,25 @@
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
     "cors": "^2.8.5",
+    "express": "^4.16.4",
     "history": "^4.9.0",
     "immutability-helper": "^3.0.0",
     "mdbreact": "^4.11.1",
-    "prop-types": "^15.7.2",
-    "express": "^4.16.4",
     "mongoose": "^5.4.19",
+    "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-addons-update": "^15.6.2",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-datepicker": "^2.2.0",
     "react-dom": "^16.8.4",
+    "react-redux": "^6.0.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.8",
     "react-simple-timefield": "^2.0.1",
     "react-spring": "^8.0.17",
-    "react-time-picker": "^3.3.0"
+    "react-time-picker": "^3.3.0",
+    "reactstrap": "^7.1.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   }
 }

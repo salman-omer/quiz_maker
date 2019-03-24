@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
-const Data = require("./data");
 const QuizTemplate = require("./quiz-template")
+const announcements = require("./routes/api/announcements")
 
 const API_PORT = 3001;
 const app = express();
-
+const router = express.Router();
 
 
 app.use(function (req, res, next) {
@@ -38,14 +38,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger("dev"));
 
-// this is our get method
-// this method fetches all available data in our database
-router.get("/getData", (req, res) => {
-  Data.find((err, data) => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true, data: data });
-  });
-});
+
 
 // this is our update method
 // this method overwrites existing data in our database
