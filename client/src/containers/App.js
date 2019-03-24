@@ -8,7 +8,7 @@ import Forum from '../containers/Forum';
 import CreateAnnouncement from '../components/CreateAnnouncement';
 import ViewAnnouncement from '../components/ViewAnnouncement';
 import QuizContainer from '../containers/QuizContainer';
-import NavBar from '../containers/NavBar';
+import AppNavbar from './AppNavbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -17,7 +17,7 @@ const App = (props) => {
         <Provider store = {store}>
             <Router>
                 <React.Fragment>
-                
+                <AppNavbar/>
                 <Route exact path='/' component={Home} />
                 <Route exact path='/forum' render={Forum} />
                 <Route exact path='/quizzes' component={QuizContainer} />
